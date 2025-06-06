@@ -12,7 +12,9 @@ extern Adafruit_AM2320 am2320;
 
 void readTmpHmdData(float *temp, float *humidity);
 
-void constructJsonPayload_TMP_HMD_SNSR(StaticJsonDocument<200> *doc, float *temp, float *humidity);
+void constructJsonPayload_TMP_HMD_SNSR(StaticJsonDocument<200> *doc, float *temp, float *humidity, tm *timeinfo);
+
+void constructJsonPayload_TMP_HMD_PR(StaticJsonDocument<200> *doc);
 
 #ifdef _DEBUG_
   #define   tmp_hmd_setup()   am2320.begin();

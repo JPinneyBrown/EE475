@@ -5,9 +5,7 @@ extern String url = String("https://firestore.googleapis.com/v1/projects/") + PR
              "/" + DOCUMENT +
              "?key=" + FIREBASE_API_KEY;
 
-
-void loopedWifiDatabaseUpdate(StaticJsonDocument<200> *doc) {
-  // Connect to Wi-Fi
+void connectToWifi() {
   Serial.print("Connecting to WiFi");
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -20,6 +18,11 @@ void loopedWifiDatabaseUpdate(StaticJsonDocument<200> *doc) {
 
   Serial.print("WiFi status code: ");
   Serial.println(WiFi.status());
+}
+
+void loopedWifiDatabaseUpdate(StaticJsonDocument<200> *doc) {
+  // Connect to Wi-Fi
+  connectToWifi();
 
   if (WiFi.status() == WL_CONNECTED) {
     Serial.println("\nConnected to WiFi!");
@@ -33,6 +36,7 @@ void loopedWifiDatabaseUpdate(StaticJsonDocument<200> *doc) {
 
     // Send HTTP PATCH request
     HTTPClient http;
+    Serial.println(url);
     http.begin(url);
     http.addHeader("Content-Type", "application/json");
 
@@ -69,5 +73,19 @@ void listNetworks() {
     Serial.print(" (");
     Serial.print(WiFi.RSSI(i));
     Serial.println(" dBm)");
+  }
+}
+
+void getNTPTime(struct tm *timeinfo) {
+  connectToWifi();
+  if (WiFi.status() == WL_CONNECTED) {
+    configTime(-8 * 3600, 0, "pool.ntp.org", "time.nist.gov");
+    if (getLocalTime(timeinfo)) {
+      Serial.println(timeinfo, "Initial time: %Y-%m-%d %H:%M:%S");
+    } else {
+      Serial.println("Failed to get time");
+    }
+  } else {
+    Serial.println("WiFi connection failed.");
   }
 }

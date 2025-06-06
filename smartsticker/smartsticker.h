@@ -7,4 +7,6 @@
 
 #include "smartsticker_wifi.h"
 #include "smartsticker_tmp_hmd_sensor.h"
-
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include <time.h>

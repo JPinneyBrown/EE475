@@ -2,9 +2,10 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <time.h>
 
-#define ssid              "Thorin, Son of Thrain"
-#define password          "johnsons"
+#define ssid              "Ecole Maison Rocher"
+#define password          "laboratory"
 
 #define FIREBASE_API_KEY  "AIzaSyCPv_k2k0sj_5s8RTfHVqA7vRbAvJviE5o"
 #define PROJECT_ID        "haven-data"
@@ -14,8 +15,8 @@
 extern String url;
 
 void loopedWifiDatabaseUpdate(StaticJsonDocument<200> *doc);
+void getNTPTime(struct tm *timeinfo);
 void listNetworks();
-
 
 
 void listNetworks();

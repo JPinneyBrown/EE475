@@ -7,13 +7,18 @@ void readTmpHmdData(float *temp, float *humidity) {
   *humidity = am2320.readHumidity();
 }
 
-void constructJsonPayload_TMP_HMD_SNSR(StaticJsonDocument<200> *doc, float *temp, float *humidity) {
+void constructJsonPayload_TMP_HMD_SNSR(StaticJsonDocument<200> *doc, float *temp, float *humidity, struct tm *timeinfo) {
   JsonObject fields = doc->createNestedObject("fields");
   
+  char timestamp[25];
+  strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", timeinfo);
+
   // JSON payload using ArduinoJson
   fields["type"]["stringValue"] = "Temp And Humidity Sensor";
-  fields["fields"]["unique ID"]["integerValue"] = UNID;
-  fields["fields"]["temperature"]["doubleValue"] = *temp;
-  fields["fields"]["humidity"]["doubleValue"] = *humidity;
+  fields["unique ID"]["integerValue"] = UNID;
+  fields["temperature"]["doubleValue"] = *temp;
+  fields["humidity"]["doubleValue"] = *humidity;
+  fields["timestamp"]["stringValue"] = timestamp;
   return;
 }
+
