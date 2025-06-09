@@ -10,14 +10,7 @@ void setup() {
   tmp_hmd_setup();
   esp_sleep_enable_timer_wakeup(TOTAL_SLEEP);
 
-  xTaskCreate(
-    vTempHumidityTask,      // Task function
-    "TempHumidityTask",     // Name
-    4096,                   // Stack size
-    NULL,                   // Task parameters
-    1,                      // Priority
-    NULL                    // Task handle
-  );
+  createHmdTempTask();
 }
 
 void loop() {

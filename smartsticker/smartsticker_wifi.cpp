@@ -2,7 +2,7 @@
 
 extern String url = String("https://firestore.googleapis.com/v1/projects/") + PROJECT_ID +
              "/databases/(default)/documents/" + COLLECTION +
-             "/" + DOCUMENT +
+             "/sticker_" + DEVICE_TYPE + UNID +
              "?key=" + FIREBASE_API_KEY;
 
 void connectToWifi() {
@@ -89,3 +89,4 @@ void getNTPTime(struct tm *timeinfo) {
     Serial.println("WiFi connection failed.");
   }
 }
+
