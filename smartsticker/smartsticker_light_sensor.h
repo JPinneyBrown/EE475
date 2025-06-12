@@ -2,21 +2,24 @@
 #define _SS_LGHT_SNSR_H_
 
 #include <Arduino.h>
+
 #include "ArduinoJson.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
-#define PHOTODIODE_PIN A0
+#include "sensor_info.h"
+#include "smartsticker_wifi.h"
 
-#ifdef _DEVICE_TYPE_INIT_
-#undef DEVICE_TYPE
-#undef UNID
-#define DEVICE_TYPE   "Light"
-#define UNID          itoa(0x0001);
-#endif
+
+#define     PHOTODIODE_PIN      2
 
 void readLightData(int *lightLevel);
 
 void constructJsonPayload_LGHT_SNSR(StaticJsonDocument<200> *doc, int *lightLevel, tm *timeinfo);
 
-#define light_setup() pinMode(PHOTODIODE_PIN, input);
+void vLightTask(void *pvParameters);
 
+#define light_setup()         pinMode(PHOTODIODE_PIN, INPUT);
+
+#define createLightTask()     xTaskCreate(vLightTask, "LightTask", 4096, NULL, 1, NULL)
 #endif
